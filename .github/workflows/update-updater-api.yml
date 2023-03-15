@@ -28,8 +28,9 @@ jobs:
       - name: Detect channels
         id: channel
         run: |
-          echo CHANNEL=$(jq -r '.channel' new_build_info.json) >> $GITHUB_OUTPUT
-          VERSION=$(echo "${{ github.ref }}" | sed 's{^refs/tags/{{')
+          CHANNEL=$(jq -r '.channel' new_build_info.json)
+          VERSION=${{ steps.tag-name.outputs.TAG_NAME }}
+          echo CHANNEL=$CHANNEL >> $GITHUB_OUTPUT
           if [ "$CHANNEL" == "stable" ]; then
             echo MAJOR=$(echo $VERSION | cut -d. -f1) >> $GITHUB_OUTPUT
             echo MINOR=$(echo $VERSION | cut -d. -f1-2) >> $GITHUB_OUTPUT
